@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.loader {
+  color: black;
+  visibility: hidden;
+}
+
+.App {
+  transition: all 2s ease-in-out;
+  height: 100vh;
+}
