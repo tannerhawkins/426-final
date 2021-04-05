@@ -113,6 +113,9 @@ function Calendar() {
       }
     });
   }
+  return <div>
+    <button onClick="authorize"></button>
+  </div>
 }
 // [END calendar_quickstart]
 export default Calendar;

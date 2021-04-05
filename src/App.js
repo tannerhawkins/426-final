@@ -4,6 +4,7 @@ import Weather from "./Weather";
 import Loader from "./Loader";
 import Clock from "./Clock";
 import News from "./News";
+import Calendar from "./Calendar";
 
 const images = [
   "./images/1.jpg",
@@ -21,12 +22,22 @@ function getNext(curr){
   }
 }
 
+function getUrlVars() {
+  var vars = {};
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+      vars[key] = value;
+  });
+  return vars;
+}
+
 function App() {
   const [image, setImage] = useState(0);
 
   setTimeout(function nextImage() {
     setImage(getNext(image));
   }, 10000)
+
+  console.log(getUrlVars());
 
 
   return (
@@ -35,6 +46,7 @@ function App() {
       <Loader/>
       <Clock />
       <News />
+      <Calendar />
     </div>
   );
 }
