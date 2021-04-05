@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ShowDetail() {
+function Loader() {
   return (
     <div id="loader" className="loader center">
       <i className="fa fa-spinner fa-spin fa-5x" />
@@ -8,4 +8,4 @@ function ShowDetail() {
   );
 }
 
-export default ShowDetail;
+export default Loader;

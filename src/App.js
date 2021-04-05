@@ -1,13 +1,15 @@
 import './App.css';
 import { useEffect, useState } from "react";
-import Location from "./Location";
-import Loader from "./Loader"
-
+import Weather from "./Weather";
+import Loader from "./Loader";
+import Clock from "./Clock";
+import News from "./News";
 
 const images = [
   "./images/1.jpg",
   "./images/2.jpg",
   "./images/3.jpg",
+  "./images/4.jpg",
 ]
 
 function getNext(curr){
@@ -26,10 +28,13 @@ function App() {
     setImage(getNext(image));
   }, 10000)
 
+
   return (
     <div className="App" style={{backgroundImage: `url(${images[image]})`, backgroundRepeat: 'no-repeat', backgroundSize: "cover"}}>
-      <Location />
+      <Weather />
       <Loader/>
+      <Clock />
+      <News />
     </div>
   );
 }
