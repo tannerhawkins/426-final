@@ -4,7 +4,6 @@ import Weather from "./Weather";
 import Loader from "./Loader";
 import Clock from "./Clock";
 import News from "./News";
-import Calendar from "./Calendar";
 
 const images = [
   "./images/1.jpg",
@@ -47,7 +46,6 @@ function App() {
       <Loader/>
       <Clock />
       <News />
-      <Calendar />
     </div>
   );
 }
