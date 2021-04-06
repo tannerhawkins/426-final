@@ -23,11 +23,12 @@ function getNext(curr){
 }
 
 function getUrlVars() {
-  var vars = {};
-  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-      vars[key] = value;
-  });
-  return vars;
+  let url = window.location.href;
+  //var vars = {};
+  //var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+  //    vars[key] = value;
+  //});
+  return url;
 }
 
 function App() {
