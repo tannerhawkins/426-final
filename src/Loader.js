@@ -2,8 +2,8 @@ import React from 'react';
 
 function Loader() {
   return (
-    <div id="loader" className="loader center">
-      <i className="fa fa-spinner fa-spin fa-5x" />
+    <div id="loader" className="center">
+      <i className="fa fa-spin fa-spinner fa-5x" />
     </div>
   );
 }

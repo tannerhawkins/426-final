@@ -4,6 +4,7 @@ import Weather from "./Weather";
 import Loader from "./Loader";
 import Clock from "./Clock";
 import News from "./News";
+import Week from "./Week";
 
 const images = [
   "./images/1.jpg",
@@ -12,12 +13,12 @@ const images = [
   "./images/4.jpg",
 ]
 
-function getNext(curr){
-  if(curr+1 === images.length){
+function getNext(curr) {
+  if (curr + 1 === images.length) {
     return 0;
   }
   else {
-    return curr+1;
+    return curr + 1;
   }
 }
 
@@ -37,15 +38,19 @@ function App() {
     setImage(getNext(image));
   }, 10000)
 
-  console.log(getUrlVars());
-
-
   return (
-    <div className="App" style={{backgroundImage: `url(${images[image]})`, backgroundRepeat: 'no-repeat', backgroundSize: "cover"}}>
-      <Weather />
-      <Loader/>
-      <Clock />
+    <div className="App" style={{ backgroundImage: `url(${images[image]})`, backgroundRepeat: 'no-repeat', backgroundSize: "cover" }}>
+      <div id="clockWeather">
+        <div id="clock">
+          <Clock />
+        </div>
+        <div id="weather">
+          <Loader />
+          <Weather />
+        </div>
+      </div>
       <News />
+      <Week />
     </div>
   );
 }

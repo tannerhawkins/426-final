@@ -10,7 +10,11 @@ function Clock() {
         if (minutes.toString().length == 1){
             minutes = `0${minutes}`;
         }
-        setTime(`${date.getHours() % 12}:${minutes}`);
+        let hours = date.getHours();
+        if (hours > 12) {
+            hours = hours - 12;
+        }
+        setTime(`${hours}:${minutes}`);
     })
     return (
         <div id="time">{time}</div>

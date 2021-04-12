@@ -1,6 +1,8 @@
 import { Component, useEffect, useState } from "react";
 import axios from "axios";
 
+
+
 function Weather() {
 
     const [finalMessage, setMessage] = useState("");
@@ -14,6 +16,7 @@ function Weather() {
     const [main, setMain] = useState(null);
     const [description, setDescription] = useState(null);
     const [count, setCount] = useState(0);
+    const [sunset, setSunset] = useState(null);
     const code = "cf0cdab436e7a78c55ebf2423ebb5eab";
     let newLat;
     let newLon;
@@ -24,19 +27,74 @@ function Weather() {
     let newMain;
     let newDescription;
 
-    if (count === 0){
-        window.addEventListener("load", getLocation, {once : true});
-        setCount(1);
+    useEffect(() => {
+        document.getElementById("weatherBox").innerHTML = `
+        <div id="weatherImage">
+        <i class="fa ${images(main)}"></i>
+        <div class="temp">${removeDecimal(currTemp)}</div>
+        </div>
+        <div class="weatherInfo">
+        <div>${capitalize(description)}</div>
+        </div>`
+        if (main != null) {
+            document.getElementById("weatherBox").style.display = "flex";
+        }
+        getLocation();
+    });
+
+    function capitalize(string){
+        if(string == null) {return}
+        let words = string.split(" ")
+        for( let i = 0; i < words.length; i++){
+            words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+        }
+        return words.join(" ")
     }
 
-    useEffect(() => {
-        document.getElementById("location").innerText = finalMessage;
-    });
+    function removeDecimal(string){
+        if(string == null) {return}
+        return string.toString().split(".")[0] + '&#176';
+    }
+
+    function images(weather) {
+        let now = new Date();
+        if (now < sunset) {
+            switch (weather) {
+                case "Clear":
+                    return "fa-sun"
+                case "Clouds":
+                    return "fa-cloud-sun"
+                case "Drizzle":
+                    return "fa-cloud-sun-rain"
+                case "Rain":
+                    return "fa-cloud-showers-heavy"
+                case "Thunderstorm":
+                    return "fa-bolt"
+                case "Snow":
+                    return "fa-snowflake"
+            }
+        } else {
+            switch (weather) {
+                case "Clear":
+                    return "fa-moon"
+                case "Clouds":
+                    return "fa-cloud-moon"
+                case "Drizzle":
+                    return "fa-cloud-moon-rain"
+                case "Rain":
+                    return "fa-cloud-showers-heavy"
+                case "Thunderstorm":
+                    return "fa-bolt"
+                case "Snow":
+                    return "fa-snowflake"
+            }
+        }
+    }
 
     async function getWeather() {
         if (newLat != null & newLon != null) {
             try {
-                document.getElementById("loader").style.visibility = "visible";
+                document.getElementById("loader").style.display = "block";
                 await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${newLat}&lon=${newLon}&appid=${code}&units=${units}`).then(result => {
                     setWeather(result);
                     newWeather = result;
@@ -50,11 +108,12 @@ function Weather() {
                     newMain = newWeather.data.weather[0].main;
                     setDescription(newWeather.data.weather[0].description);
                     newDescription = newWeather.data.weather[0].description;
+                    setSunset(new Date(newWeather.data.sys.sunset * 1000))
                 });
-                document.getElementById("loader").style.visibility = "hidden";
+                document.getElementById("loader").style.display = "none";
             }
             catch (error) {
-                document.getElementById("loader").style.visibility = "hidden";
+                document.getElementById("loader").style.display = "none";
                 console.log(error);
             }
         }
@@ -92,18 +151,19 @@ function Weather() {
             setMessage("Your browser doesn't support geolocation, please enter city or zipcode.");
         }
         else {
-            console.log("getting");
             navigator.geolocation.getCurrentPosition(onSuccess, onError);
         }
     }
-    
+
     return <div>
-        <h1 className="title" id="location"></h1>
-        <div id="weatherBox">
-            <div id="weatherImage"></div>
-            <div>{currTemp}</div>
-            <div>{main}</div>
-            <div>{description}</div>
+        <div id="weatherBox" style={{ display: "none" }}>
+            <div id="weatherImage">
+                <i className={`fa ${images(main)}`}></i>
+                <div className="temp">{removeDecimal(currTemp)}</div>
+            </div>
+            <div className="weatherInfo">
+                <div>{capitalize(description)}</div>
+            </div>
         </div>
     </div>
 };
