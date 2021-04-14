@@ -1,6 +1,24 @@
 import { Component, useEffect, useState } from "react";
 import axios from "axios";
-import getCookie from "./Cookie";
+import getCookie from "./Cookie.js";
+
+function getUnitCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        } 
+    }
+    document.cookie = `${cname}=block`
+    return "imperial";
+  }
+
 
 
 function Weather() {
@@ -12,7 +30,7 @@ function Weather() {
     const [low, setLow] = useState(null);
     const [high, setHigh] = useState(null);
     const [currTemp, setCurrTemp] = useState(null);
-    const [units, setUnits] = useState("imperial");
+    const [units, setUnits] = useState(getUnitCookie("units"));
     const [main, setMain] = useState(null);
     const [description, setDescription] = useState(null);
     const [count, setCount] = useState(0);
@@ -42,6 +60,7 @@ function Weather() {
             document.getElementById("weatherBox").style.display = "flex";
         }
         getLocation();
+        setUnits(getUnitCookie("units"))
         document.getElementById("weather").style.display = getCookie("weather");
     });
 
@@ -113,9 +132,11 @@ function Weather() {
     function toggleTemp(){
         if(units == "imperial"){
             setUnits("metric");
+            document.cookie = "units=metric"
             setCurrTemp((currTemp - 32) * 5/9);
         } else {
             setUnits("imperial");
+            document.cookie = "units=imperial"
             setCurrTemp((currTemp * 9/5) + 32);
         }
     }

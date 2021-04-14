@@ -13,13 +13,13 @@ const images = [
   "./images/4.jpg",
 ]
 
-images.forEach(url => {
-  let image = document.createElement("link");
-  image.rel = "preload"
-  image.href = url
-  image.as = "image"
-  document.head.appendChild(image);
-})
+// images.forEach(url => {
+//   let image = document.createElement("link");
+//   image.rel = "preload"
+//   image.href = url
+//   image.as = "image"
+//   document.head.appendChild(image);
+// })
 
 function getNext(curr) {
   if (curr + 1 === images.length) {
@@ -48,7 +48,9 @@ function App() {
   useEffect(() => {
     setTimeout(function nextImage() {
       setImage(getNext(image));
+      //document.body.style.backgroundImage = `url(${images[image]})`;
     }, 60000)
+
   });
 
   document.body.style.backgroundImage = `url(${images[image]})`;

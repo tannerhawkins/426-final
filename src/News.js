@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import getCookie from "./Cookie";
+import getCookie from "./Cookie.js";
 
 let news;
 let newsLinks;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import getCookie from "./Cookie";
+import getCookie from "./Cookie.js";
 
 function Clock() {
     let date = new Date();
