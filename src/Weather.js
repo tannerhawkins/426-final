@@ -1,6 +1,6 @@
 import { Component, useEffect, useState } from "react";
 import axios from "axios";
-
+import getCookie from "./Cookie";
 
 
 function Weather() {
@@ -27,6 +27,8 @@ function Weather() {
     let newMain;
     let newDescription;
 
+    getCookie("weather");
+
     useEffect(() => {
         document.getElementById("weatherBox").innerHTML = `
         <div id="weatherImage">
@@ -40,6 +42,7 @@ function Weather() {
             document.getElementById("weatherBox").style.display = "flex";
         }
         getLocation();
+        document.getElementById("weather").style.display = getCookie("weather");
     });
 
     function capitalize(string){
@@ -88,6 +91,32 @@ function Weather() {
                 case "Snow":
                     return "fa-snowflake"
             }
+        }
+    }
+
+    function toggleWeather() {
+        if(document.getElementById("weather").style.display == "block"){
+            document.cookie = "weather=none";
+            document.getElementById("weather").style.display = "none";
+            document.getElementById("toggle_temp").style.display = "none";
+            document.getElementById("toggle_temp").setAttribute("data-shown", "hidden");
+        } else {
+            document.cookie = "weather=block";
+            document.getElementById("weather").style.display = "block";
+            document.getElementById("toggle_temp").style.display = "block";
+            document.getElementById("toggle_temp").setAttribute("data-shown", "shown");
+        }
+    }
+
+    document.getElementById("hide_weather").onclick = toggleWeather;
+
+    function toggleTemp(){
+        if(units == "imperial"){
+            setUnits("metric");
+            setCurrTemp((currTemp - 32) * 5/9);
+        } else {
+            setUnits("imperial");
+            setCurrTemp((currTemp * 9/5) + 32);
         }
     }
 
@@ -154,6 +183,8 @@ function Weather() {
             navigator.geolocation.getCurrentPosition(onSuccess, onError);
         }
     }
+
+    document.getElementById("toggle_temp").onclick = toggleTemp;
 
     return <div>
         <div id="weatherBox" style={{ display: "none" }}>

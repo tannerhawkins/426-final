@@ -13,6 +13,14 @@ const images = [
   "./images/4.jpg",
 ]
 
+images.forEach(url => {
+  let image = document.createElement("link");
+  image.rel = "preload"
+  image.href = url
+  image.as = "image"
+  document.head.appendChild(image);
+})
+
 function getNext(curr) {
   if (curr + 1 === images.length) {
     return 0;
@@ -31,15 +39,24 @@ function getUrlVars() {
   return url;
 }
 
+
+
 function App() {
+
   const [image, setImage] = useState(0);
 
-  setTimeout(function nextImage() {
-    setImage(getNext(image));
-  }, 10000)
+  useEffect(() => {
+    setTimeout(function nextImage() {
+      setImage(getNext(image));
+    }, 60000)
+  });
+
+  document.body.style.backgroundImage = `url(${images[image]})`;
+  document.body.style.backgroundRepeat = "no-repeat";
+  document.body.style.backgroundSize = "cover";
 
   return (
-    <div className="App" style={{ backgroundImage: `url(${images[image]})`, backgroundRepeat: 'no-repeat', backgroundSize: "cover" }}>
+    <div id="App" className="App">
       <div id="clockWeather">
         <div id="clock">
           <Clock />

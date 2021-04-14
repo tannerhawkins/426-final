@@ -36,7 +36,11 @@
       <div id="settingsList">
         <div id="authorize_button" class="googleButton settingsListObject" data-shown="shown">Add Google Calendar</div>
         <div id="signout_button" class="googleButton settingsListObject" data-shown="hidden">Sign Out of Google</div>
-        <div class="settingsListObject" data-shown="shown">Toggle Temp Units</div>
+        <div id="toggle_temp" class="settingsListObject" data-shown="shown">Toggle Temp Units</div>
+        <div id="hide_week" class="settingsListObject" data-shown="shown">Toggle Calendar</div>
+        <div id="hide_news" class="settingsListObject" data-shown="shown">Toggle News</div>
+        <div id="hide_clock" class="settingsListObject" data-shown="shown">Toggle Clock</div>
+        <div id="hide_weather" class="settingsListObject" data-shown="shown">Toggle Weather</div>
       </div>
       <i class="fa fa-cog fa-2x"></i>
     </div>
@@ -165,8 +169,14 @@
         let hours = time.substring(0, 2);
         let minutes = time.substring(3, 5);
         if (hours > 12) {
+          if (hours - 12 < 10){
+            return `${(hours - 12).toString().charAt(1)}:${minutes}pm`
+          }
           return `${hours - 12}:${minutes}pm`
         } else {
+          if (hours < 10){
+            return `${(hours - 12).toString().charAt(1)}:${minutes}am`
+          }
           return `${hours}:${minutes}am`
         }
       }
