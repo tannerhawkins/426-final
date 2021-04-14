@@ -142,7 +142,7 @@ function Weather() {
     }
 
     async function getWeather() {
-        if (newLat != null & newLon != null) {
+        if (newLat != null && newLon != null && weather == null && newWeather == null) {
             try {
                 document.getElementById("loader").style.display = "block";
                 await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${newLat}&lon=${newLon}&appid=${code}&units=${units}`).then(result => {
