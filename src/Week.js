@@ -6,10 +6,10 @@ function getWeekCookie(cname) {
     var ca = decodedCookie.split(';');
     for(var i = 0; i <ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0) == ' ') {
+        while (c.charAt(0) === ' ') {
             c = c.substring(1);
         }
-        if (c.indexOf(name) == 0) {
+        if (c.indexOf(name) === 0) {
             return c.substring(name.length, c.length);
         } 
     }
@@ -42,23 +42,25 @@ function Week() {
                 return "friday"
             case 6:
                 return "saturday"
+            default:
+                return
         }
     }
     function getNext(curr) {
         if (curr + 1 > 6) {
-            if (day == 0) {
+            if (day === 0) {
                 return -1
             }
             return 0
         }
-        if (curr + 1 == day) {
+        if (curr + 1 === day) {
             return -1
         }
         return curr + 1;
     }
 
     function toggleWeek() {
-        if(document.getElementById("week").style.display == "flex"){
+        if(document.getElementById("week").style.display === "flex"){
             document.cookie = "week=none"
             document.getElementById("week").style.display = "none";
         } else {
@@ -73,7 +75,7 @@ function Week() {
         let toReturn = []
         let j = 0;
         let daysDate = date.getDate()
-        for (let i = day; i != -1; i = getNext(i)) {
+        for (let i = day; i !== -1; i = getNext(i)) {
             let dayOfWeek = getDayOfWeek(i);
             toReturn.push(
                 <div id={`${dayOfWeek}`} className="weekday" key={dayOfWeek}>

@@ -1,29 +1,29 @@
-import { Component, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import getCookie from "./Cookie.js";
+
 
 function getUnitCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0) == ' ') {
+        while (c.charAt(0) === ' ') {
             c = c.substring(1);
         }
-        if (c.indexOf(name) == 0) {
+        if (c.indexOf(name) === 0) {
             return c.substring(name.length, c.length);
-        } 
+        }
     }
-    document.cookie = `${cname}=block`
+    document.cookie = `${cname}=imperial`
     return "imperial";
-  }
+}
 
 
 
 function Weather() {
 
-    const [finalMessage, setMessage] = useState("");
     const [weather, setWeather] = useState(null);
     const [lat, setLat] = useState(null);
     const [lon, setLon] = useState(null);
@@ -45,13 +45,15 @@ function Weather() {
     let newMain;
     let newDescription;
 
+
+
     getCookie("weather");
 
     useEffect(() => {
         document.getElementById("weatherBox").innerHTML = `
         <div id="weatherImage">
         <i class="fa ${images(main)}"></i>
-        <div class="temp">${removeDecimal(currTemp)}</div>
+        <div id="temp" data-units=${units}>${removeDecimal(currTemp)}</div>
         </div>
         <div class="weatherInfo">
         <div>${capitalize(description)}</div>
@@ -60,21 +62,20 @@ function Weather() {
             document.getElementById("weatherBox").style.display = "flex";
         }
         getLocation();
-        setUnits(getUnitCookie("units"))
         document.getElementById("weather").style.display = getCookie("weather");
     });
 
-    function capitalize(string){
-        if(string == null) {return}
+    function capitalize(string) {
+        if (string == null) { return }
         let words = string.split(" ")
-        for( let i = 0; i < words.length; i++){
+        for (let i = 0; i < words.length; i++) {
             words[i] = words[i][0].toUpperCase() + words[i].substr(1);
         }
         return words.join(" ")
     }
 
-    function removeDecimal(string){
-        if(string == null) {return}
+    function removeDecimal(string) {
+        if (string == null) { return }
         return string.toString().split(".")[0] + '&#176';
     }
 
@@ -94,6 +95,28 @@ function Weather() {
                     return "fa-bolt"
                 case "Snow":
                     return "fa-snowflake"
+                case "Mist":
+                    return "fa-smog"
+                case "Smoke":
+                    return "fa-wind"
+                case "Haze":
+                    return "fa-smog"
+                case "Dust":
+                    return "fa-wind"
+                case "Fog":
+                    return "fa-smog"
+                case "Sand":
+                    return "fa-wind"
+                case "Dust":
+                    return "fa-smog"
+                case "Ash":
+                    return "fa-smog"
+                case "Squall":
+                    return "fa-wind"
+                case "Tornado":
+                    return "fa-wind"
+                default:
+                    return
             }
         } else {
             switch (weather) {
@@ -109,12 +132,34 @@ function Weather() {
                     return "fa-bolt"
                 case "Snow":
                     return "fa-snowflake"
+                case "Mist":
+                    return "fa-smog"
+                case "Smoke":
+                    return "fa-wind"
+                case "Haze":
+                    return "fa-smog"
+                case "Dust":
+                    return "fa-wind"
+                case "Fog":
+                    return "fa-smog"
+                case "Sand":
+                    return "fa-wind"
+                case "Dust":
+                    return "fa-smog"
+                case "Ash":
+                    return "fa-smog"
+                case "Squall":
+                    return "fa-wind"
+                case "Tornado":
+                    return "fa-wind"
+                default:
+                    return
             }
         }
     }
 
     function toggleWeather() {
-        if(document.getElementById("weather").style.display == "block"){
+        if (document.getElementById("weather").style.display === "block") {
             document.cookie = "weather=none";
             document.getElementById("weather").style.display = "none";
             document.getElementById("toggle_temp").style.display = "none";
@@ -129,20 +174,23 @@ function Weather() {
 
     document.getElementById("hide_weather").onclick = toggleWeather;
 
-    function toggleTemp(){
-        if(units == "imperial"){
+    function toggleTemp() {
+        if (document.getElementById("temp").getAttribute("data-units") === "imperial") {
             setUnits("metric");
             document.cookie = "units=metric"
-            setCurrTemp((currTemp - 32) * 5/9);
+            document.getElementById("temp").setAttribute("data-units", "metric");
+            setCurrTemp((currTemp - 32) * 5 / 9);
         } else {
             setUnits("imperial");
             document.cookie = "units=imperial"
-            setCurrTemp((currTemp * 9/5) + 32);
+            document.getElementById("temp").setAttribute("data-units", "imperial");
+            setCurrTemp((currTemp * 9 / 5) + 32);
         }
     }
 
     async function getWeather() {
         if (newLat != null && newLon != null && weather == null && newWeather == null) {
+            setUnits(getUnitCookie("units"))
             try {
                 document.getElementById("loader").style.display = "block";
                 await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${newLat}&lon=${newLon}&appid=${code}&units=${units}`).then(result => {
@@ -183,7 +231,6 @@ function Weather() {
         newLat = positionNew.coords.latitude;
         newLon = positionNew.coords.longitude;
         if (newLat != null & newLon != null) {
-            setMessage(`Your location is ${newLat}, ${newLon}`);
             if (weather == null) { getWeather(); }
         }
         else {
@@ -192,13 +239,13 @@ function Weather() {
     }
 
     function onError() {
-        setMessage("Please allow use of location or enter zip code to see weather.");
         console.log("Please allow use of location or enter zip code to see weather.");
+        document.getElementById("loader").style.display = "none";
     }
 
     function getLocation() {
         if (!supports()) {
-            setMessage("Your browser doesn't support geolocation, please enter city or zipcode.");
+
         }
         else {
             navigator.geolocation.getCurrentPosition(onSuccess, onError);
@@ -211,7 +258,7 @@ function Weather() {
         <div id="weatherBox" style={{ display: "none" }}>
             <div id="weatherImage">
                 <i className={`fa ${images(main)}`}></i>
-                <div className="temp">{removeDecimal(currTemp)}</div>
+                <div id="temp" units={units}>{removeDecimal(currTemp)}</div>
             </div>
             <div className="weatherInfo">
                 <div>{capitalize(description)}</div>

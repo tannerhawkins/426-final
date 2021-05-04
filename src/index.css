@@ -50,6 +50,10 @@ code {
   left: 0;
   z-index: 5;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 #news {
@@ -58,12 +62,15 @@ code {
   font-size: 150%;
   transition: all 2s ease-in-out;
   text-shadow: 1px 1px black;
+  width: 80%;
 }
 
 #clockWeather {
   display: flex;
   width: 100%;
   text-shadow: 1px 1px black;
+  position: absolute;
+  top: 0;
 }
 
 #clock {
@@ -119,7 +126,7 @@ a:hover {
   align-items: center;
 }
 
-.temp {
+#temp {
   margin-left: 5%;
 }
 
@@ -149,9 +156,13 @@ a:hover {
   text-shadow: 1px 1px grey;
 }
 
+.weekEvents {
+  font-size: 1.2vw;
+}
+
 .dateDay {
   text-align: left;
-  font-size: 200%;
+  font-size: 2vw;
 }
 
 .dateWeekday {
@@ -162,8 +173,9 @@ a:hover {
   margin-bottom: 3%;
 }
 
-.weekdayTitle {
+.weekDayTitle {
   text-align: center;
+  font-size: 1.3vw;
 }
 
 #week {

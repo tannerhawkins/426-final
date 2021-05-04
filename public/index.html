@@ -45,7 +45,135 @@
       <i class="fa fa-cog fa-2x"></i>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-firestore.js"></script>
     <script type="text/javascript">
+      var firebaseConfig = {
+        apiKey: "AIzaSyDgnA6pT_g6OyR9eA0Tx4s-ttqU76uQIRM",
+        authDomain: "final-309722.firebaseapp.com",
+        projectId: "final-309722",
+        storageBucket: "final-309722.appspot.com",
+        messagingSenderId: "976889067933",
+        appId: "1:976889067933:web:d995eb3c1d7728fe0ad774",
+        measurementId: "G-XRK1EE2M1Z"
+      };
+      firebase.initializeApp(firebaseConfig);
+      var db = firebase.firestore().collection("users");
+      let display_data = {
+        weather: "block",
+        units: "imperial",
+        week: 'flex',
+        clock: "block",
+        news: "block"
+      }
+
+      function toggleTemp() {
+        let currUnits = document.getElementById("temp").getAttribute("data-units")
+        if (currUnits == "imperial") {
+          display_data.units = "metric"
+        } else {
+          display_data.units = "imperial"
+        }
+        if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+          let id = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getId()
+          db.doc(id).set(display_data);
+        }
+      }
+
+      function toggleWeather() {
+        let curr = document.getElementById("weather").style.display
+        if (curr == "block") {
+          display_data.weather = "none"
+        } else {
+          display_data.weather = "block"
+        }
+        if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+          let id = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getId()
+          db.doc(id).set(display_data);
+        }
+      }
+
+      function toggleWeek() {
+        let curr = document.getElementById("week").style.display
+        if (curr == "flex") {
+          display_data.week = "none"
+        } else {
+          display_data.week = "flex"
+        }
+        if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+          let id = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getId()
+          db.doc(id).set(display_data);
+        }
+      }
+
+      function toggleNews() {
+        let curr = document.getElementById("news").style.display
+        if (curr == "block") {
+          display_data.news = "none"
+        } else {
+          display_data.news = "block"
+        }
+        if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+          let id = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getId()
+          db.doc(id).set(display_data);
+        }
+      }
+
+      function toggleClock() {
+        let curr = document.getElementById("clock").style.display
+        if (curr == "block") {
+          display_data.clock = "none"
+        } else {
+          display_data.clock = "block"
+        }
+        if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+          let id = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getId()
+          db.doc(id).set(display_data);
+        }
+      }
+
+      function addListeners() {
+        document.getElementById('toggle_temp').addEventListener("click", toggleTemp)
+        document.getElementById("hide_clock").addEventListener("click", toggleClock)
+        document.getElementById("hide_weather").addEventListener("click", toggleWeather)
+        document.getElementById("hide_news").addEventListener("click", toggleNews)
+        document.getElementById("hide_week").addEventListener("click", toggleWeek)
+      }
+
+      function fixDisplays() {
+        if(display_data.weather !== document.getElementById("weather").style.display){
+          document.getElementById("hide_weather").click()
+        }
+        if(display_data.clock !== document.getElementById("clock").style.display){
+          document.getElementById("hide_clock").click()
+        }
+        if(display_data.news !== document.getElementById("news").style.display){
+          document.getElementById("hide_news").click()
+        }
+        if(display_data.week !== document.getElementById("week").style.display){
+          document.getElementById("hide_week").click()
+        }
+        if (display_data.units !== document.getElementById("temp").getAttribute("data-units")) {
+          document.getElementById("toggle_temp").click()
+          // if (document.getElementById("temp").getAttribute("data-units") === "imperial") {
+          //   document.getElementById("temp").setAttribute("data-units", "metric");
+          //   document.cookie = "units=metric"
+          //   currTemp = document.getElementById("temp").innerText.substring(0, document.getElementById("temp").innerText.length -1)
+          //   document.getElementById("temp").innerText = ((currTemp - 32) * 5 / 9).toString().split(".")[0] + String.fromCharCode(176);
+          // } else {
+          //   document.getElementById("temp").setAttribute("data-units", "imperial");
+          //   document.cookie = "units=imperial"
+          //   currTemp = document.getElementById("temp").innerText.substring(0, document.getElementById("temp").innerText.length -1)
+          //   document.getElementById("temp").innerText = ((currTemp * 9 / 5) + 32).toString().split(".")[0] + String.fromCharCode(176);
+          // }
+        }
+        let id = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getId()
+        if (db.doc(id).get) {
+          db.doc(id).set(display_data);
+        }
+      }
+
+
       // Client ID and API key from the Developer Console
       var CLIENT_ID = '976889067933-lt9qlt4adbfrfk4p289ko2q26glql3u7.apps.googleusercontent.com';
       var API_KEY = 'AIzaSyDgnA6pT_g6OyR9eA0Tx4s-ttqU76uQIRM';
@@ -81,7 +209,6 @@
         }).then(function () {
           // Listen for sign-in state changes.
           gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-
           // Handle the initial sign-in state.
           updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
           authorizeButton.onclick = handleAuthClick;
@@ -89,6 +216,22 @@
         }, function (error) {
           console.log(JSON.stringify(error, null, 2));
         });
+      }
+
+      function displayFunc(dis) {
+        if (dis == null) {
+          return "none"
+        } else {
+          return dis
+        }
+      }
+
+      function unitFunc(dis) {
+        if (dis == null) {
+          return "imperial"
+        } else {
+          return dis
+        }
       }
 
       /**
@@ -101,12 +244,37 @@
           //signoutButton.style.display = 'block';
           authorizeButton.setAttribute("data-shown", "hidden");
           signoutButton.setAttribute("data-shown", "shown");
+          let id = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getId()
+          db.doc(id).get().then((doc) => {
+            if (doc.exists) {
+              display_data = doc.data()
+              document.cookie = `units=${display_data.units}`
+              document.cookie = `week=${display_data.week}`
+              document.cookie = `clock=${display_data.clock}`
+              document.cookie = `news=${display_data.news}`
+              document.cookie = `weather=${display_data.weather}`
+              fixDisplays();
+            } else {
+              // doc.data() will be undefined in this case
+              display_data = {
+                weather: displayFunc(document.getElementById("weather").style.display),
+                units: unitFunc(document.getElementById("temp").getAttribute("data-units")),
+                week: displayFunc(document.getElementById("week").style.display),
+                clock: displayFunc(document.getElementById("clock").style.display),
+                news: displayFunc(document.getElementById("news").style.display)
+              }
+              db.doc(id).set(display_data)
+            }
+          }).catch((error) => {
+            console.log("Error getting document:", error);
+          });
           listUpcomingEvents();
         } else {
           //authorizeButton.style.display = 'block';
           //signoutButton.style.display = 'none';
           authorizeButton.setAttribute("data-shown", "shown");
           signoutButton.setAttribute("data-shown", "hidden");
+
           let list = document.getElementsByClassName("weekEvents");
           for (let i = 0; i < list.length; i++) {
             list[i].innerText = '';
@@ -125,7 +293,17 @@
        *  Sign out the user upon button click.
        */
       function handleSignoutClick(event) {
+        let id = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getId()
+        display_data = {
+          weather: displayFunc(document.getElementById("weather").style.display),
+          units: unitFunc(document.getElementById("temp").getAttribute("data-units")),
+          week: displayFunc(document.getElementById("week").style.display),
+          clock: displayFunc(document.getElementById("clock").style.display),
+          news: displayFunc(document.getElementById("news").style.display)
+        }
+        db.doc(id).set(display_data)
         gapi.auth2.getAuthInstance().signOut();
+
       }
 
       /**
@@ -169,13 +347,16 @@
         let hours = time.substring(0, 2);
         let minutes = time.substring(3, 5);
         if (hours > 12) {
-          if (hours - 12 < 10){
-            return `${(hours - 12).toString().charAt(1)}:${minutes}pm`
+          if (hours - 12 < 10) {
+            return `${(hours - 12).toString().charAt(0)}:${minutes}pm`
           }
           return `${hours - 12}:${minutes}pm`
         } else {
-          if (hours < 10){
-            return `${(hours - 12).toString().charAt(1)}:${minutes}am`
+          if (hours < 10) {
+            return `${(hours - 12).toString().charAt(0)}:${minutes}am`
+          }
+          if (hours == 12) {
+            return `${hours}:${minutes}pm`
           }
           return `${hours}:${minutes}am`
         }
@@ -219,7 +400,7 @@
           }
         });
       }
-
+      addListeners()
     </script>
 
     <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()"
