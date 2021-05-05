@@ -353,7 +353,7 @@
           return `${hours - 12}:${minutes}pm`
         } else {
           if (hours < 10) {
-            return `${(hours - 12).toString().charAt(0)}:${minutes}am`
+            return `${(hours).toString().charAt(1)}:${minutes}am`
           }
           if (hours == 12) {
             return `${hours}:${minutes}pm`

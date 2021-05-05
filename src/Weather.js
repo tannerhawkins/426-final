@@ -61,7 +61,7 @@ function Weather() {
         if (main != null) {
             document.getElementById("weatherBox").style.display = "flex";
         }
-        getLocation();
+        //getLocation();
         document.getElementById("weather").style.display = getCookie("weather");
     });
 
@@ -179,11 +179,13 @@ function Weather() {
             setUnits("metric");
             document.cookie = "units=metric"
             document.getElementById("temp").setAttribute("data-units", "metric");
+            newCurrTemp = (currTemp - 32) * 5 / 9
             setCurrTemp((currTemp - 32) * 5 / 9);
         } else {
             setUnits("imperial");
             document.cookie = "units=imperial"
             document.getElementById("temp").setAttribute("data-units", "imperial");
+            newCurrTemp = (currTemp * 9 / 5) + 32
             setCurrTemp((currTemp * 9 / 5) + 32);
         }
     }
@@ -211,7 +213,9 @@ function Weather() {
                 document.getElementById("loader").style.display = "none";
             }
             catch (error) {
-                document.getElementById("loader").style.display = "none";
+                if (document.getElementById("loader") !== null) {
+                    document.getElementById("loader").style.display = "none";
+                }
                 console.log(error);
             }
         }
@@ -253,7 +257,7 @@ function Weather() {
     }
 
     document.getElementById("toggle_temp").onclick = toggleTemp;
-
+    document.onload = getLocation();
     return <div>
         <div id="weatherBox" style={{ display: "none" }}>
             <div id="weatherImage">
