@@ -8,7 +8,6 @@ let newsAbstracts;
 
 function News() {
     const key = '2R53iX0gPy4uF4HNx8VhyTJ6yNZ9dCT3';
-    const call = `https://api.nytimes.com/svc/topstories/v2/us.json?api-key=${key}`;
     const [curr, setCurr] = useState(0);
     const [title, setTitle] = useState(null);
     const [link, setLink] = useState(null);
@@ -17,7 +16,7 @@ function News() {
     window.addEventListener("load", getNews, {once : true});
 
     function toggleNews() {
-        if(document.getElementById("news").style.display == "block"){
+        if(document.getElementById("news").style.display === "block"){
             document.cookie = "news=none"
             document.getElementById("news").style.display = "none";
         } else {
@@ -73,7 +72,7 @@ function News() {
     }
     return (
         <div id="news">
-            <h1 id="title"><a href={`${link}`} target="_blank">{title}</a></h1>
+            <h1 id="title"><a href={`${link}`} target="_blank" rel="noreferrer">{title}</a></h1>
             <h4 id="abstract">{abstract}</h4>
         </div>
     );

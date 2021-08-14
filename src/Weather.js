@@ -25,27 +25,15 @@ function getUnitCookie(cname) {
 function Weather() {
 
     const [weather, setWeather] = useState(null);
-    const [lat, setLat] = useState(null);
-    const [lon, setLon] = useState(null);
-    const [low, setLow] = useState(null);
-    const [high, setHigh] = useState(null);
     const [currTemp, setCurrTemp] = useState(null);
     const [units, setUnits] = useState(getUnitCookie("units"));
     const [main, setMain] = useState(null);
     const [description, setDescription] = useState(null);
-    const [count, setCount] = useState(0);
     const [sunset, setSunset] = useState(null);
     const code = "cf0cdab436e7a78c55ebf2423ebb5eab";
     let newLat;
     let newLon;
     let newWeather;
-    let newLow;
-    let newHigh;
-    let newCurrTemp;
-    let newMain;
-    let newDescription;
-
-
 
     getCookie("weather");
 
@@ -101,8 +89,6 @@ function Weather() {
                     return "fa-wind"
                 case "Haze":
                     return "fa-smog"
-                case "Dust":
-                    return "fa-wind"
                 case "Fog":
                     return "fa-smog"
                 case "Sand":
@@ -138,8 +124,6 @@ function Weather() {
                     return "fa-wind"
                 case "Haze":
                     return "fa-smog"
-                case "Dust":
-                    return "fa-wind"
                 case "Fog":
                     return "fa-smog"
                 case "Sand":
@@ -179,13 +163,11 @@ function Weather() {
             setUnits("metric");
             document.cookie = "units=metric"
             document.getElementById("temp").setAttribute("data-units", "metric");
-            newCurrTemp = (currTemp - 32) * 5 / 9
             setCurrTemp((currTemp - 32) * 5 / 9);
         } else {
             setUnits("imperial");
             document.cookie = "units=imperial"
             document.getElementById("temp").setAttribute("data-units", "imperial");
-            newCurrTemp = (currTemp * 9 / 5) + 32
             setCurrTemp((currTemp * 9 / 5) + 32);
         }
     }
@@ -198,16 +180,9 @@ function Weather() {
                 await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${newLat}&lon=${newLon}&appid=${code}&units=${units}`).then(result => {
                     setWeather(result);
                     newWeather = result;
-                    setLow(newWeather.data.main.temp_min);
-                    newLow = newWeather.data.main.temp_min;
-                    setHigh(newWeather.data.main.temp_max);
-                    newHigh = newWeather.data.main.temp_max;
                     setCurrTemp(newWeather.data.main.temp);
-                    newCurrTemp = newWeather.data.main.temp;
                     setMain(newWeather.data.weather[0].main);
-                    newMain = newWeather.data.weather[0].main;
                     setDescription(newWeather.data.weather[0].description);
-                    newDescription = newWeather.data.weather[0].description;
                     setSunset(new Date(newWeather.data.sys.sunset * 1000))
                 });
                 document.getElementById("loader").style.display = "none";
@@ -230,8 +205,6 @@ function Weather() {
     }
 
     function onSuccess(positionNew) {
-        setLat(positionNew.coords.latitude);
-        setLon(positionNew.coords.longitude);
         newLat = positionNew.coords.latitude;
         newLon = positionNew.coords.longitude;
         if (newLat != null & newLon != null) {

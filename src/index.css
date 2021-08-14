@@ -3,6 +3,7 @@ html {
   height:100vh;
 }
 
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,6 +14,7 @@ body {
   -webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
+  background-size: cover;
   overflow: hidden;
   height: 100vh;
   width: 100vw;
@@ -201,11 +203,13 @@ a:hover {
   left: 3%;
   bottom: 2%;
   z-index: 50;
+  user-select: none;
 }
 
 #settings:hover {
   color:grey;
   text-shadow: 1px 1px 3px black;
+  cursor: pointer;
 }
 
 #settings:hover [data-shown="shown"]{

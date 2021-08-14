@@ -13,14 +13,6 @@ const images = [
   "./images/4.jpg",
 ]
 
-// images.forEach(url => {
-//   let image = document.createElement("link");
-//   image.rel = "preload"
-//   image.href = url
-//   image.as = "image"
-//   document.head.appendChild(image);
-// })
-
 function getNext(curr) {
   if (curr + 1 === images.length) {
     return 0;
@@ -29,17 +21,6 @@ function getNext(curr) {
     return curr + 1;
   }
 }
-
-function getUrlVars() {
-  let url = window.location.href;
-  //var vars = {};
-  //var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-  //    vars[key] = value;
-  //});
-  return url;
-}
-
-
 
 function App() {
 
